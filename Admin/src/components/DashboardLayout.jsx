@@ -16,11 +16,11 @@ export default function DashboardLayout() {
             <h1 className="text-2xl font-semibold">Welcome to your Dashboard</h1>
             <h6 className="text-sm font-normal text-gray-600">This is where you will control all the details about your e-commerce store</h6>
         </div>
+
         <div className="flex gap-4 mt-10">
             <DetailsCard title="Total Sales" value={`₹${totalSales}`} />
             <DetailsCard  title="Total Products" value={totalProduct}  />
             <DetailsCard  title="Total Users" value={totalUser} />
-
         </div>
     <div className="flex gap-4 mt-10">
       <UserLoginChart />
