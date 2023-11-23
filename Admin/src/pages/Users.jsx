@@ -15,38 +15,7 @@ import {Delete, PenIcon, Trash, WifiIcon} from "lucide-react";
 import {useUserContext} from "../Context/UserContext";
 import { Link } from "react-router-dom";
 
-const data = [
-  {
-    name: "Yash Gaurav",
-    phone: "6351259205",
-    address: "355, Mansarovar Society, Dindoli, Surat",
-    orders: ["Resin", "Epoxy"],
-  },
-  {
-    name: "Yash Gaurav",
-    phone: "6351259205",
-    address: "355, Mansarovar Society, Dindoli, Surat",
-    orders: ["Resin", "Epoxy"],
-  },
-  {
-    name: "Yash Gaurav",
-    phone: "6351259205",
-    address: "355, Mansarovar Society, Dindoli, Surat",
-    orders: ["Resin", "Epoxy"],
-  },
-  {
-    name: "Yash Gaurav",
-    phone: "6351259205",
-    address: "355, Mansarovar Society, Dindoli, Surat",
-    orders: ["Resin", "Epoxy"],
-  },
-  {
-    name: "Yash Gaurav",
-    phone: "6351259205",
-    address: "355, Mansarovar Society, Dindoli, Surat",
-    orders: ["Resin", "Epoxy"],
-  },
-];
+
 
 function DeleteIcon() {
   return (

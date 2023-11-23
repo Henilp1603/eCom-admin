@@ -12,6 +12,7 @@ import {useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useProductContext} from "../Context/ProductContext";
 import Loading from "../components/Loading";
+import {toast} from "react-toastify";
 
 export default function UpdateProduct() {
   let {state} = useLocation();
@@ -45,7 +46,9 @@ export default function UpdateProduct() {
 
   const handleUpdateProduct = async () => {
     setIsLoading(true);
-    const API = `${import.meta.env.VITE_SERVER_API}/api/product/update-product/${state._id}`;
+    const API = `${
+      import.meta.env.VITE_SERVER_API
+    }/api/product/update-product/${state._id}`;
 
     const formData = new FormData();
     formData.append("title", data.title);
@@ -60,9 +63,10 @@ export default function UpdateProduct() {
     data.category.map((c) => formData.append("category", c));
 
     const res = await axios.put(API, formData);
-    console.log(res);
+
     if (res.data) {
       setIsLoading(false);
+      toast.success("Product Updated.");
       navigate("/products");
       getProducts(`${import.meta.env.VITE_SERVER_API}/api/product/all-product`);
     }
@@ -156,6 +160,7 @@ export default function UpdateProduct() {
                   <TextInput
                     placeholder="Enter Colors"
                     name="color"
+                    value={curColor}
                     onChange={(e) => setcurColor(e.target.value)}
                   ></TextInput>
                   <TextInput
@@ -166,15 +171,18 @@ export default function UpdateProduct() {
                   ></TextInput>
                   <Button
                     className="flex-1"
-                    onClick={() =>
+                    onClick={() => {
                       setData((prev) => {
                         return {
                           ...prev,
                           colors: [...prev.colors, curColor],
                           newImg: [...prev.newImg, image],
                         };
-                      })
-                    }
+                      });
+                      toast.success("Color and Image Added.");
+                      setcurColor("");
+                      setImage("");
+                    }}
                   >
                     Add
                   </Button>
@@ -198,14 +206,16 @@ export default function UpdateProduct() {
                     </SearchSelect>
                     <Button
                       className="flex-1"
-                      onClick={() =>
+                      onClick={() => {
                         setData((prev) => {
                           return {
                             ...prev,
                             category: [...prev.category, curCategory],
                           };
-                        })
-                      }
+                        });
+                        toast.success("Category Added.");
+                        setCurCategory("");
+                      }}
                     >
                       Add
                     </Button>
@@ -219,18 +229,20 @@ export default function UpdateProduct() {
                   <TextInput
                     placeholder="Enter Sizes"
                     className="flex-1"
+                    value={size}
                     onChange={(e) => setSize(e.target.value)}
                   ></TextInput>
                   <TextInput
                     placeholder="Enter Price"
                     className="flex-1"
                     type="number"
+                    value={price}
                     onChange={(e) => setPrice(e.target.value)}
                   ></TextInput>
 
                   <Button
                     className="flex-1"
-                    onClick={() =>
+                    onClick={() => {
                       setData((prev) => {
                         return {
                           ...prev,
@@ -242,8 +254,11 @@ export default function UpdateProduct() {
                             },
                           ],
                         };
-                      })
-                    }
+                      });
+                      setPrice("");
+                      setSize("");
+                      toast.success("Size and Price Added.");
+                    }}
                   >
                     Add
                   </Button>

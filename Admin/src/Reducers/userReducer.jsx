@@ -21,6 +21,23 @@ const userReducer = (state, action) => {
               return pro.id !== action.payload
             })
           };
+       case "SET_TOTAL_USER":
+        let {totalUser} = state.users.reduce(
+          (accum, curval) => {
+            accum.totalUser = accum.totalUser + 1;
+            
+  
+            return accum;
+          },
+          {
+            totalUser: 0,
+            
+          }
+        );
+        return {
+          ...state,
+          totalUser
+        };     
   
       default:
         return state;

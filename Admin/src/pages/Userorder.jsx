@@ -49,26 +49,32 @@ const Userorder = () => {
               <TableRow>
                 <TableHeaderCell>Customer Name</TableHeaderCell>
                 <TableHeaderCell>Products</TableHeaderCell>
+                <TableHeaderCell>Quantity</TableHeaderCell>
                 <TableHeaderCell>Date & Time</TableHeaderCell>
                 <TableHeaderCell>Total Ammount</TableHeaderCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {userOrder.map((item) => (
+              {
+              userOrder.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell>{item.orderby?.name}</TableCell>
-                  <TableCell className="text-start p-0">
-                    <TableRow>
-                      <TableHeaderCell>Product Name</TableHeaderCell>
-                      <TableHeaderCell>Quantity</TableHeaderCell>
-                    </TableRow>
+                  <TableCell>
+                   
 
                     {item.products.map((pr) => (
-                      <TableRow>
-                        <TableCell>{pr?.product.title}</TableCell>
-                        <TableCell>{pr?.count}</TableCell>
-                      </TableRow>
+                     
+                        <Text>{pr?.product.title}</Text>
+                        
+                    
                     ))}
+                  </TableCell>
+                  <TableCell>
+                      {
+                        item.products.map((pr)=>(
+                          <Text>{pr?.count}</Text>
+                        ))
+                      }
                   </TableCell>
                   <TableCell>
                     <Text>
@@ -90,9 +96,12 @@ const Userorder = () => {
                     </Button>
                   </TableCell>
                 </TableRow>
-              ))}
+              ))
+              
+              }
             </TableBody>
           </Table>
+            {userOrder.length ==0?<div className="w-full text-center text-lg font-semibold text-gray-600 pt-3">No Data Available</div>:<></>}
         </Card>
       </div>
     </div>

@@ -5,6 +5,7 @@ import userReducer from "../Reducers/userReducer";
 const initialState = {
   users: [],
   sigleuser: {},
+  totalUser:0
 };
 
 const API = `${import.meta.env.VITE_SERVER_API}/api/user/all-users`;
@@ -29,7 +30,11 @@ const UserProvider = ({children}) => {
   const removeUser=useCallback(async(id)=>{
     const url=`${import.meta.env.VITE_SERVER_API}/api/user/user-delete/${id}`
     const res=await axios.delete(url)
-    getUsers(API)
+    if (res) {
+      toast.success("User Deleted.")
+      getUsers(API)
+    }
+    
     // dispatch({type:"REMOVE_ITEM",payload:id})
   },[state.users])
 
@@ -38,6 +43,10 @@ const UserProvider = ({children}) => {
   useEffect(() => {
     getUsers(API);
   },[]);
+
+  useEffect(()=>{
+    dispatch({type:"SET_TOTAL_USER"})
+  },[state.users])
 
   return (
     <UserContext.Provider value={{...state, getSingleUser,getUsers,removeUser}}>

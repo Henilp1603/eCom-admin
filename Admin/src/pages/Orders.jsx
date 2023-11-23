@@ -25,7 +25,8 @@ function DeleteIcon() {
 }
 
 const Orders = () => {
-  const {orders} = useOrderContext();
+  const {orders,removeOrder} = useOrderContext();
+  console.log(orders);
   return (
     <div className="px-8 py-7 pl-72 w-[100vw] overflow-hidden">
       <div>
@@ -42,6 +43,7 @@ const Orders = () => {
               <TableRow>
                 <TableHeaderCell>Customer Name</TableHeaderCell>
                 <TableHeaderCell>Products</TableHeaderCell>
+                <TableHeaderCell>Quantity</TableHeaderCell>
                 <TableHeaderCell>Date & Time</TableHeaderCell>
                 <TableHeaderCell>Total Ammount</TableHeaderCell>
               </TableRow>
@@ -50,18 +52,22 @@ const Orders = () => {
               {orders.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell>{item.orderby?.name}</TableCell>
-                  <TableCell className="text-start p-0">
-                    <TableRow>
-                      <TableHeaderCell>Product Name</TableHeaderCell>
-                      <TableHeaderCell>Quantity</TableHeaderCell>
-                    </TableRow>
+                  <TableCell>
+                   
 
                     {item.products.map((pr) => (
-                      <TableRow>
-                        <TableCell>{pr?.product.title}</TableCell>
-                        <TableCell>{pr?.count}</TableCell>
-                      </TableRow>
+                     
+                        <Text>{pr?.product.title}</Text>
+                        
+                    
                     ))}
+                  </TableCell>
+                  <TableCell>
+                      {
+                        item.products.map((pr)=>(
+                          <Text>{pr?.count}</Text>
+                        ))
+                      }
                   </TableCell>
                   <TableCell>
                     <Text>
@@ -78,14 +84,16 @@ const Orders = () => {
                       color="red"
                       iconPosition="left"
                       className="flex items-center justify-between gap-2 w-max"
+                      onClick={()=>removeOrder(item._id)}
                     >
-                      Delete User
+                      Delete 
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
+          {orders.length ==0?<div className="w-full text-center text-lg font-semibold text-gray-600 pt-3">No Data Available</div>:<></>}
         </Card>
       </div>
     </div>

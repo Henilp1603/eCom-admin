@@ -21,6 +21,23 @@ const productReducer = (state, action) => {
               return pro.id !== action.payload
             })
           };
+       case "SET_TOTAL_PRODUCT":
+        let {totalProduct} = state.products.reduce(
+          (accum, curval) => {
+            accum.totalProduct = accum.totalProduct + 1;
+            
+  
+            return accum;
+          },
+          {
+            totalProduct: 0,
+            
+          }
+        );
+        return {
+          ...state,
+          totalProduct
+        };   
   
       default:
         return state;

@@ -1,11 +1,14 @@
 import {createContext, useCallback, useContext, useEffect, useMemo, useReducer} from "react";
 import axios from "axios";
 import orderReducer from "../Reducers/orderReducer";
+import { toast } from "react-toastify";
 
 const initialState = {
   orders: [],
   sigleorder: {},
-  userOrder:[]
+  userOrder:[],
+  totalSales:0,
+  totalOrder:0
 };
 
 const API = `${import.meta.env.VITE_SERVER_API}/api/order/all-order`;
@@ -30,7 +33,11 @@ const OrderProvider = ({children}) => {
   const removeOrder=useCallback(async(id)=>{
     const url=`${import.meta.env.VITE_SERVER_API}/api/order/order-delete/${id}`
     const res=await axios.delete(url)
-    getUsers(API)
+    if (res) {
+      toast.success("Order Deleted.")
+      getUsers(API)
+    }
+   
     // dispatch({type:"REMOVE_ITEM",payload:id})
   },[state.orders])
 
@@ -45,6 +52,10 @@ const OrderProvider = ({children}) => {
   useEffect(() => {
     getOrders(API);
   },[]);
+
+  useEffect(()=>{
+    dispatch({type:"SET_TOTAL_SALES"})
+  },[state.orders])
 
   return (
     <OrderContext.Provider value={{...state, getSingleOrder,getOrders,removeOrder,findOrderByUser}}>

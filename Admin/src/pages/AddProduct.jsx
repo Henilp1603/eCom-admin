@@ -9,9 +9,10 @@ import {
 } from "@tremor/react";
 import axios from "axios";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useProductContext} from "../Context/ProductContext";
 import Loading from "../components/Loading";
+import { toast } from "react-toastify";
 
 export default function AddProduct() {
   const [data, setData] = useState({
@@ -57,6 +58,7 @@ export default function AddProduct() {
     const res = await axios.post(API, formData);
     if (res.data) {
       setIsLoading(false);
+      toast.success("Product Created.")
       navigate("/products");
       getProducts(`${import.meta.env.VITE_SERVER_API}/api/product/all-product`);
     }
@@ -151,6 +153,7 @@ export default function AddProduct() {
                     placeholder="Enter Colors"
                     autoComplete="off"
                     name="color"
+                    value={curColor}
                     onChange={(e) => setcurColor(e.target.value)}
                   ></TextInput>
                   <TextInput
@@ -158,11 +161,13 @@ export default function AddProduct() {
                     autoComplete="off"
                     className="flex-1"
                     type="file"
+                    
+                    defaultValue={image}
                     onChange={(e) => setImage(e.target.files[0])}
                   ></TextInput>
                   <Button
                     className="flex-1"
-                    onClick={() =>
+                    onClick={() =>{
                       setData((prev) => {
                         return {
                           ...prev,
@@ -170,6 +175,10 @@ export default function AddProduct() {
                           images: [...prev.images, image],
                         };
                       })
+                      toast.success("Color and Image Added.")
+                      setcurColor("")
+                      setImage("")
+                    }
                     }
                   >
                     Add
@@ -184,6 +193,7 @@ export default function AddProduct() {
                     <SearchSelect
                       value={curCategory}
                       onValueChange={(value) => setCurCategory(value)}
+                      
                     >
                       <SearchSelectItem value="Resin">Resin</SearchSelectItem>
                       <SearchSelectItem value="Art">Art</SearchSelectItem>
@@ -194,13 +204,16 @@ export default function AddProduct() {
                     </SearchSelect>
                     <Button
                       className="flex-1"
-                      onClick={() =>
+                      onClick={() =>{
                         setData((prev) => {
                           return {
                             ...prev,
                             category: [...prev.category, curCategory],
                           };
                         })
+                      toast.success("Category Added.")
+                      setCurCategory("")
+                      }
                       }
                     >
                       Add
@@ -217,18 +230,20 @@ export default function AddProduct() {
                     className="flex-1"
                     onChange={(e) => setSize(e.target.value)}
                     autoComplete="off"
+                    value={size}
                   ></TextInput>
                   <TextInput
                     placeholder="Enter Price"
                     className="flex-1"
                     autoComplete="off"
                     type="number"
+                    value={price}
                     onChange={(e) => setPrice(e.target.value)}
                   ></TextInput>
 
                   <Button
                     className="flex-1"
-                    onClick={() =>
+                    onClick={() =>{
                       setData((prev) => {
                         return {
                           ...prev,
@@ -241,6 +256,11 @@ export default function AddProduct() {
                           ],
                         };
                       })
+                      setPrice("")
+                      setSize("")
+                      toast.success("Size and Price Added.")
+
+                    }
                     }
                   >
                     Add
@@ -248,7 +268,7 @@ export default function AddProduct() {
                 </div>
                 <div className="flex items-center justify-center gap-4 mt-6">
                   <Button onClick={() => handleAddProduct()}>Save</Button>
-                  <Button variant="secondary">Discard</Button>
+                 <Link to="/"> <Button variant="secondary">Discard</Button></Link>
                 </div>
               </div>
             </div>

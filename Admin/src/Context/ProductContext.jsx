@@ -1,11 +1,13 @@
 import {createContext, useContext, useEffect, useReducer} from "react";
 import axios from "axios";
 import productReducer from "../Reducers/productReducer";
+import { toast } from "react-toastify";
 
 const initialState = {
   products: [],
   sigleProduct: {},
-  addedProduct:[]
+  addedProduct:[],
+  totalProduct:0
 };
 
 const API = `${import.meta.env.VITE_SERVER_API}/api/product/all-product`;
@@ -31,13 +33,20 @@ const ProductProvider = ({children}) => {
     
     const url=`${import.meta.env.VITE_SERVER_API}/api/product/delete-product/${id}`
     const res=await axios.delete(url)
-    getProducts(API)
+    if (res) {
+      toast.success("Product Deleted.")
+      getProducts(API)
+    }
     // dispatch({type:"REMOVE_ITEM",payload:id})
   }
 
   useEffect(() => {
     getProducts(API);
   },[]);
+
+  useEffect(()=>{
+    dispatch({type:"SET_TOTAL_PRODUCT"})
+  },[state.products])
 
   return (
     <ProductContext.Provider value={{...state, getSingleProduct,getProducts,removeProduct}}>
