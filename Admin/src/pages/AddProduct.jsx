@@ -91,7 +91,7 @@ export default function AddProduct() {
                 <Card className="w-max">
                   <div className="relative object-cover w-32 h-32">
                     
-                    //color - image ke liye
+                    {/* color - image ke liye */}
                     <p>
                       {data.colors.map((item) => (
                         data.images.map((img)=>(
@@ -126,7 +126,7 @@ export default function AddProduct() {
                       
                       
                     </p>
-                    //size and price ke liye
+                    {/* //size and price ke liye */}
                     <p>
                       {data.discountedPrice.map((item) => (
                         <p>
@@ -155,7 +155,7 @@ export default function AddProduct() {
                         </p>
                       ))}
                     </p>
-                   //category ke liye
+                   {/* //category ke liye */}
                     <p>
                       {data.category.map((item) => (
                         <li>{item}</li>
