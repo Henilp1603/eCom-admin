@@ -1,6 +1,7 @@
 import {createContext, useCallback, useContext, useEffect, useMemo, useReducer} from "react";
 import axios from "axios";
 import userReducer from "../Reducers/userReducer";
+import { toast } from "react-toastify";
 
 const initialState = {
   users: [],
@@ -35,7 +36,7 @@ const UserProvider = ({children}) => {
       getUsers(API)
     }
     
-    // dispatch({type:"REMOVE_ITEM",payload:id})
+   
   },[state.users])
 
 

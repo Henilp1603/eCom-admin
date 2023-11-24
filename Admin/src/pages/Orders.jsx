@@ -25,8 +25,8 @@ function DeleteIcon() {
 }
 
 const Orders = () => {
-  const {orders,removeOrder} = useOrderContext();
-  console.log(orders);
+  const {orders, removeOrder} = useOrderContext();
+  
   return (
     <div className="px-8 py-7 pl-72 w-[100vw] overflow-hidden">
       <div>
@@ -53,21 +53,19 @@ const Orders = () => {
                 <TableRow key={item._id}>
                   <TableCell>{item.orderby?.name}</TableCell>
                   <TableCell>
-                   
-
-                    {item.products.map((pr) => (
-                     
-                        <Text>{pr?.product.title}</Text>
-                        
                     
-                    ))}
+                    {
+                  
+                        item.products.map((pr)=>(
+                          pr.product?(<Text>{pr?.product?.title}</Text>):(<Text>No Product</Text>)
+                        ))
+                      
+                    }
                   </TableCell>
                   <TableCell>
-                      {
-                        item.products.map((pr)=>(
-                          <Text>{pr?.count}</Text>
-                        ))
-                      }
+                    {item.products.map((pr) => (
+                      <Text>{pr?.count}</Text>
+                    ))}
                   </TableCell>
                   <TableCell>
                     <Text>
@@ -84,16 +82,22 @@ const Orders = () => {
                       color="red"
                       iconPosition="left"
                       className="flex items-center justify-between gap-2 w-max"
-                      onClick={()=>removeOrder(item._id)}
+                      onClick={() => removeOrder(item._id)}
                     >
-                      Delete 
+                      Delete
                     </Button>
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
           </Table>
-          {orders.length ==0?<div className="w-full text-center text-lg font-semibold text-gray-600 pt-3">No Data Available</div>:<></>}
+          {orders.length == 0 ? (
+            <div className="w-full text-center text-lg font-semibold text-gray-600 pt-3">
+              No Data Available
+            </div>
+          ) : (
+            <></>
+          )}
         </Card>
       </div>
     </div>

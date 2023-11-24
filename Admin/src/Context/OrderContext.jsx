@@ -1,6 +1,6 @@
 import {createContext, useCallback, useContext, useEffect, useMemo, useReducer} from "react";
 import axios from "axios";
-import orderReducer from "../Reducers/orderReducer";
+import orderReducer from "../Reducers/orderReducer"
 import { toast } from "react-toastify";
 
 const initialState = {
@@ -35,7 +35,7 @@ const OrderProvider = ({children}) => {
     const res=await axios.delete(url)
     if (res) {
       toast.success("Order Deleted.")
-      getUsers(API)
+      getOrders(API)
     }
    
     // dispatch({type:"REMOVE_ITEM",payload:id})

@@ -12,7 +12,7 @@ import {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {useProductContext} from "../Context/ProductContext";
 import Loading from "../components/Loading";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
 export default function AddProduct() {
   const [data, setData] = useState({
@@ -22,7 +22,7 @@ export default function AddProduct() {
     discountedPrice: [],
     category: [],
     colors: [],
-    images: "",
+    images: [],
   });
 
   const [image, setImage] = useState("");
@@ -45,22 +45,31 @@ export default function AddProduct() {
     setIsLoading(true);
     const API = `${import.meta.env.VITE_SERVER_API}/api/product/create-product`;
 
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("MRP", data.MRP);
-    data.images.map((f) => formData.append("images", f));
-    data.colors.map((c) => formData.append("colors", c));
+    try {
+      const formData = new FormData();
+      formData.append("title", data.title);
+      formData.append("description", data.description);
+      formData.append("MRP", data.MRP);
 
-    formData.append("discountedPrice", JSON.stringify(data.discountedPrice));
+      formData.append("colors", JSON.stringify(data.colors));
+      formData.append("discountedPrice", JSON.stringify(data.discountedPrice));
 
-    data.category.map((c) => formData.append("category", c));
-    const res = await axios.post(API, formData);
-    if (res.data) {
+      data.images.map((f) => formData.append("images", f));
+
+      data.category.map((c) => formData.append("category", c));
+
+      const res = await axios.post(API, formData);
+      if (res.data) {
+        setIsLoading(false);
+        toast.success("Product Created.");
+        navigate("/products");
+        getProducts(
+          `${import.meta.env.VITE_SERVER_API}/api/product/all-product`
+        );
+      }
+    } catch (error) {
       setIsLoading(false);
-      toast.success("Product Created.")
-      navigate("/products");
-      getProducts(`${import.meta.env.VITE_SERVER_API}/api/product/all-product`);
+      toast.error("error!!");
     }
   };
 
@@ -81,11 +90,77 @@ export default function AddProduct() {
               <div className="flex items-center justify-center w-full">
                 <Card className="w-max">
                   <div className="relative object-cover w-32 h-32">
-                    {uploadedImg ? (
-                      <img src={uploadedImg} />
-                    ) : (
-                      <img src="./empty-img.jpg" />
-                    )}
+                    
+                    //color - image ke liye
+                    <p>
+                      {data.colors.map((item) => (
+                        data.images.map((img)=>(
+
+                          <li>{item} - image <button
+                          onClick={() => {
+                            let newColors =
+                              data.colors.filter(
+                                (i) => i != item
+                              );
+  
+                              let newImg =
+                              data.images.filter(
+                                (i) => i != img
+                              );  
+                              
+                            setData((prev) => {
+                              return {
+                                ...prev,
+                                colors:newColors,
+                                images:newImg
+                              };
+                            });
+                            setcurColor("")
+                            toast.success("Color deleted.");
+                          }}
+                        >
+                          X
+                        </button></li>
+                        ))
+                      ))}
+                      
+                      
+                    </p>
+                    //size and price ke liye
+                    <p>
+                      {data.discountedPrice.map((item) => (
+                        <p>
+                          <li>
+                            {item.size}-{item.price}{" "}
+                            <button
+                              onClick={() => {
+                                let newDiscountedPrice =
+                                  data.discountedPrice.filter(
+                                    (i) => i.size != item.size
+                                  );
+                                setData((prev) => {
+                                  return {
+                                    ...prev,
+                                    discountedPrice:newDiscountedPrice
+                                  };
+                                });
+                                setPrice("");
+                                setSize("");
+                                toast.success("Size and Price deleted.");
+                              }}
+                            >
+                              delete
+                            </button>
+                          </li>
+                        </p>
+                      ))}
+                    </p>
+                   //category ke liye
+                    <p>
+                      {data.category.map((item) => (
+                        <li>{item}</li>
+                      ))}
+                    </p>
                   </div>
                 </Card>
               </div>
@@ -101,6 +176,7 @@ export default function AddProduct() {
                   <TextInput
                     placeholder="Enter Product Name"
                     autoComplete="off"
+                    required
                     onChange={(e) =>
                       setData((prev) => {
                         return {
@@ -118,6 +194,7 @@ export default function AddProduct() {
                   <TextInput
                     placeholder="Enter Product Description"
                     autoComplete="off"
+                    required
                     onChange={(e) =>
                       setData((prev) => {
                         return {
@@ -133,6 +210,7 @@ export default function AddProduct() {
                   <TextInput
                     placeholder="Enter Selling Price"
                     autoComplete="off"
+                    required
                     type="number"
                     onChange={(e) =>
                       setData((prev) => {
@@ -152,34 +230,33 @@ export default function AddProduct() {
                   <TextInput
                     placeholder="Enter Colors"
                     autoComplete="off"
+                    required
                     name="color"
-                    value={curColor}
                     onChange={(e) => setcurColor(e.target.value)}
                   ></TextInput>
                   <TextInput
                     placeholder="Enter Price"
                     autoComplete="off"
                     className="flex-1"
+                    required
                     type="file"
-                    
                     defaultValue={image}
                     onChange={(e) => setImage(e.target.files[0])}
                   ></TextInput>
                   <Button
                     className="flex-1"
-                    onClick={() =>{
+                    onClick={() => {
                       setData((prev) => {
                         return {
                           ...prev,
                           colors: [...prev.colors, curColor],
                           images: [...prev.images, image],
                         };
-                      })
-                      toast.success("Color and Image Added.")
-                      setcurColor("")
-                      setImage("")
-                    }
-                    }
+                      });
+                      toast.success("Color and Image Added.");
+                      setcurColor("");
+                      setImage("");
+                    }}
                   >
                     Add
                   </Button>
@@ -192,8 +269,8 @@ export default function AddProduct() {
                   <div className="w-full flex gap-2">
                     <SearchSelect
                       value={curCategory}
+                      required
                       onValueChange={(value) => setCurCategory(value)}
-                      
                     >
                       <SearchSelectItem value="Resin">Resin</SearchSelectItem>
                       <SearchSelectItem value="Art">Art</SearchSelectItem>
@@ -204,17 +281,16 @@ export default function AddProduct() {
                     </SearchSelect>
                     <Button
                       className="flex-1"
-                      onClick={() =>{
+                      onClick={() => {
                         setData((prev) => {
                           return {
                             ...prev,
                             category: [...prev.category, curCategory],
                           };
-                        })
-                      toast.success("Category Added.")
-                      setCurCategory("")
-                      }
-                      }
+                        });
+                        toast.success("Category Added.");
+                        setCurCategory("");
+                      }}
                     >
                       Add
                     </Button>
@@ -228,6 +304,7 @@ export default function AddProduct() {
                   <TextInput
                     placeholder="Enter Sizes"
                     className="flex-1"
+                    required
                     onChange={(e) => setSize(e.target.value)}
                     autoComplete="off"
                     value={size}
@@ -236,6 +313,7 @@ export default function AddProduct() {
                     placeholder="Enter Price"
                     className="flex-1"
                     autoComplete="off"
+                    required
                     type="number"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
@@ -243,7 +321,7 @@ export default function AddProduct() {
 
                   <Button
                     className="flex-1"
-                    onClick={() =>{
+                    onClick={() => {
                       setData((prev) => {
                         return {
                           ...prev,
@@ -255,20 +333,21 @@ export default function AddProduct() {
                             },
                           ],
                         };
-                      })
-                      setPrice("")
-                      setSize("")
-                      toast.success("Size and Price Added.")
-
-                    }
-                    }
+                      });
+                      setPrice("");
+                      setSize("");
+                      toast.success("Size and Price Added.");
+                    }}
                   >
                     Add
                   </Button>
                 </div>
                 <div className="flex items-center justify-center gap-4 mt-6">
                   <Button onClick={() => handleAddProduct()}>Save</Button>
-                 <Link to="/"> <Button variant="secondary">Discard</Button></Link>
+                  <Link to="/">
+                    {" "}
+                    <Button variant="secondary">Discard</Button>
+                  </Link>
                 </div>
               </div>
             </div>

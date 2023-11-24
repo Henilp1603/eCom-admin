@@ -42,24 +42,33 @@ export default function Users() {
             <TableHead>
               <TableRow>
                 <TableHeaderCell>Full Name</TableHeaderCell>
+                <TableHeaderCell>Email</TableHeaderCell>
                 <TableHeaderCell>Phone No.</TableHeaderCell>
                 <TableHeaderCell>Address</TableHeaderCell>
-                <TableHeaderCell>Order History</TableHeaderCell>
+                <TableHeaderCell>Pincode</TableHeaderCell>
+                
+                
               </TableRow>
             </TableHead>
             <TableBody>
               {users.map((item) => (
-                <TableRow key={item.name}>
+                <TableRow key={item._id}>
+                  {console.log(item)}
                   <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.email}</TableCell>
+
                   <TableCell>
-                    <Text>6351259205</Text>
+                    {item.phoneNo}
                   </TableCell>
                   <TableCell>
-                    <Text>355, Mansarovar Society, Dindoli, Surat</Text>
+                    {item.address}
+                  </TableCell>
+                  <TableCell>
+                    {item.pincode}
                   </TableCell>
                   <TableCell>
                     <Link to={`/user-order/${item._id}`}><Button variant="light">
-                      Click here for order history
+                      Order history
                     </Button></Link>
                   </TableCell>
                   <TableCell>
@@ -71,7 +80,7 @@ export default function Users() {
                       className="flex items-center justify-between gap-2 w-max"
                       onClick={() => removeUser(item._id)}
                     >
-                      Delete User
+                      Delete 
                     </Button>
                   </TableCell>
                 </TableRow>

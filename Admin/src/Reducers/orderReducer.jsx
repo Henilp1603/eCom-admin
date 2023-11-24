@@ -1,4 +1,4 @@
-const productReducer = (state, action) => {
+const orderReducer = (state, action) => {
   switch (action.type) {
     case "SET_API_DATA":
       return {
@@ -48,4 +48,4 @@ const productReducer = (state, action) => {
   }
 };
 
-export default productReducer;
+export default orderReducer;

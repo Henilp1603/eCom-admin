@@ -93,51 +93,52 @@ export default function Products() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {products.map((item) => (
-                <TableRow key={item.title}>
-                  <TableCell>{item.title}</TableCell>
+              {products.map((item,index) => (
+                <TableRow key={index}>
+                  
+                  <TableCell >{item.title}</TableCell>
 
-                  <TableCell>
+                  <TableCell  >
                     <div className="object-cover w-24 h-16 overflow-hidden rounded-md">
                       <img src={item.colorsAndImg[0].image[0]} alt="" />
                     </div>
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell  >
                     {
-                      item.discountedPrice.map((i)=>(
-                        <Text className="pb-2">{i.size}</Text>
+                      item.discountedPrice.map((i,index)=>(
+                        <Text className="pb-2" key={index}>{i.size}</Text>
                       ))
                     }
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell  >
                     {
-                      item.discountedPrice.map((i)=>(
-                        <Text className="pb-2">₹{i.price}</Text>
+                      item.discountedPrice.map((i,index)=>(
+                        <Text className="pb-2" key={index}>₹{i.price}</Text>
                       ))
                     }
                   </TableCell>
                   
-                  <TableCell>
-                    {item.colorsAndImg.map((i) => (
-                      <Badge className="mx-1 text-center" color={i.color.toLowerCase()} key={i}>{i.color}</Badge>
+                  <TableCell  >
+                    {item.colorsAndImg.map((i,index) => (
+                      <Badge className="mx-1 text-center" color={i.color.toLowerCase()} key={index}>{i.color}</Badge>
                     ))}
                   </TableCell>
 
-                  <TableCell>
-                    {item.category.map((category) => (
-                      <Badge className="mx-1" key={category}>{category}</Badge>
+                  <TableCell  >
+                    {item.category.map((category,index) => (
+                      <Badge className="mx-1" key={index}>{category}</Badge>
                     ))}
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell  >
                   <Button icon={DeleteIcon} variant="light" color="red"iconPosition="left" className="flex items-center justify-between gap-2 w-max" onClick={()=>removeProduct(item._id)}>
                       Delete 
                     </Button>
                   </TableCell>
 
-                  <TableCell>
+                  <TableCell  >
                    <Link to="/UpdateProduct"  state={item}> <Button icon={EditIcon} variant="light" iconPosition="left" className="flex items-center justify-between gap-2 w-max">
                       Edit
                     </Button></Link>

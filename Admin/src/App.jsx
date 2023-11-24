@@ -1,3 +1,4 @@
+import Invoice from "./components/Invoice";
 import { Sidebar } from "./components/Sidebar";
 import AddProduct from "./pages/AddProduct";
 import Dashboard from "./pages/Dashboard";
@@ -24,6 +25,7 @@ function App() {
         <Route path="/add-product" element={<AddProduct/>}/>
         <Route path="/UpdateProduct" element={<UpdateProduct />}/>
         <Route path="/user-order/:id" element={<Userorder/>}/>
+        <Route path="/invoice" element={<Invoice/>}/>
       </Routes>
     </Router>
     </>

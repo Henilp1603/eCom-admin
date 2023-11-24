@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import {
   Badge,
   Button,
@@ -15,7 +15,7 @@ import {
 import {Delete, PenIcon, Trash, WifiIcon} from "lucide-react";
 import {useOrderContext} from "../Context/OrderContext";
 import moment from "moment/moment";
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 function DeleteIcon() {
   return (
@@ -26,13 +26,13 @@ function DeleteIcon() {
 }
 
 const Userorder = () => {
-    const {findOrderByUser,userOrder}=useOrderContext()
-    const {id}=useParams()
-    useEffect(()=>{
-        findOrderByUser(id)
-    },[])
+  const {findOrderByUser, userOrder} = useOrderContext();
+  const {id} = useParams();
+  useEffect(() => {
+    findOrderByUser(id);
+  }, []);
 
-    console.log(userOrder);
+  console.log(userOrder);
   return (
     <div className="px-8 py-7 pl-72 w-[100vw] overflow-hidden">
       <div>
@@ -55,26 +55,22 @@ const Userorder = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {
-              userOrder.map((item) => (
+              {userOrder.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell>{item.orderby?.name}</TableCell>
                   <TableCell>
-                   
-
-                    {item.products.map((pr) => (
-                     
-                        <Text>{pr?.product.title}</Text>
-                        
-                    
-                    ))}
+                    {item.products.map((pr) =>
+                      pr.product ? (
+                        <Text>{pr?.product?.title}</Text>
+                      ) : (
+                        <Text>No Product</Text>
+                      )
+                    )}
                   </TableCell>
                   <TableCell>
-                      {
-                        item.products.map((pr)=>(
-                          <Text>{pr?.count}</Text>
-                        ))
-                      }
+                    {item.products.map((pr) => (
+                      <Text>{pr?.count}</Text>
+                    ))}
                   </TableCell>
                   <TableCell>
                     <Text>
@@ -85,27 +81,31 @@ const Userorder = () => {
                     <Text>{item.totalPrice}</Text>
                   </TableCell>
                   <TableCell>
-                    <Button
+                   <Link to="/invoice" state={item}> <Button
                       icon={DeleteIcon}
                       variant="light"
                       color="red"
                       iconPosition="left"
                       className="flex items-center justify-between gap-2 w-max"
                     >
-                      Delete User
-                    </Button>
+                      Invoice 
+                    </Button></Link>
                   </TableCell>
                 </TableRow>
-              ))
-              
-              }
+              ))}
             </TableBody>
           </Table>
-            {userOrder.length ==0?<div className="w-full text-center text-lg font-semibold text-gray-600 pt-3">No Data Available</div>:<></>}
+          {userOrder.length == 0 ? (
+            <div className="w-full text-center text-lg font-semibold text-gray-600 pt-3">
+              No Data Available
+            </div>
+          ) : (
+            <></>
+          )}
         </Card>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Userorder
+export default Userorder;
